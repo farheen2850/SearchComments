@@ -1,6 +1,9 @@
 .search-container {
   text-align: center;
   padding: 20px;
+  .search-textfield {
+    width: 500px;
+  }  
 }
 
 .search-title {
@@ -22,10 +25,14 @@
   margin-bottom: 16px;
 }
 
-.no-results {
+.no-results, .error {
   text-align: center;
   margin-top: 24px;
   color: #888;
+}
+
+.error {
+  color: red;
 }
 
 input:-webkit-autofill,

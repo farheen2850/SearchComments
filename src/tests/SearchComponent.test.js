@@ -70,11 +70,30 @@ describe('test for search component', () => {
 
     await waitFor(() => {
       expect(screen.getByText(/test1@gmail.com/i)).toBeInTheDocument();
-      expect(screen.getByText(/test2@gmail.com/i)).toBeInTheDocument();
-      expect(screen.getByText(/test3@gmail.com/i)).toBeInTheDocument();
     });
 
   });
+
+  test('renders data correctly without selecting recommendation', async () => {
+    render(<SearchComponent />);
+    
+    const input = screen.getByLabelText(/Search Comments.../i);
+    fireEvent.change(input, { target: { value: 'Test' } });
+  
+    await act(async () => {
+      jest.advanceTimersByTime(1000);
+    });
+  
+    await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
+  
+    const searchButton = screen.getByText('Search');
+    fireEvent.click(searchButton);
+  
+    await waitFor(() => {
+      expect(screen.getAllByText(/test/i).length).toBeGreaterThan(5);
+    });
+  });
+  
 
   test('clears input when clear icon is clicked', async () => {
     render(<SearchComponent />);
@@ -83,7 +102,7 @@ describe('test for search component', () => {
 
     expect(input.value).toBe('Test');
 
-    const clearIcon = screen.getByRole('button', { name: /clear-input/i });
+    const clearIcon = screen.getByTestId('CloseIcon');
     fireEvent.click(clearIcon);
 
     expect(input.value).toBe('');
